@@ -23,53 +23,77 @@
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="add-blog.html">Add Blog</a></li>
+                    <li class="nav-item" id="add-blog-link" style="display: none;"><a class="nav-link" href="add-blog.html">Add Blog</a></li>
+                    <li class="nav-item" id="signup-link"><a class="nav-link" href="signup.html">Sign Up</a></li>
+                    <li class="nav-item" id="signin-link"><a class="nav-link" href="signin.html">Sign In</a></li>
+                    <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link" href="#" id="logout">Logout</a></li>
+                    <li class="nav-item"><span class="nav-link" id="username-display"></span></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary" href="add-url.html">Add URL</a></li> <!-- Add URL button -->
                 </ul>
             </div>
         </nav>
     </header>
-    <main class="container mt-4">
-        <section id="services" class="mb-4">
-            <h2>Our Services</h2>
-            <p>We offer a range of ethical hacking services to help secure your systems.</p>
-        </section>
-        <section id="about" class="mb-4">
-            <h2>About Us</h2>
-            <p>We are a team of certified ethical hackers dedicated to improving cybersecurity.</p>
-        </section>
-        <section id="blogs" class="mb-4">
-            <h2>Our Blogs</h2>
-            <div id="blog-container"></div>
-        </section>
-        <section id="contact" class="mb-4">
-            <h2>Contact Us</h2>
-            <form id="contact-form">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea class="form-control" id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </form>
-        </section>
-        <button id="toggle-admin" class="btn btn-secondary">Toggle Admin</button>
+    <main class="container mt-4 d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div id="button-container" class="d-flex flex-column align-items-center"></div> <!-- Add this div to hold the new button -->
     </main>
     <footer class="footer-custom text-center py-3">
         <p>&copy; 2023 AllAboutHack. All rights reserved.</p>
     </footer>
     <script src="scripts/main.js"></script>
     <script src="scripts/load-blogs.js"></script>
-    <script src="scripts/toggle-admin.js"></script>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameDisplay = document.getElementById('username-display');
+            const addBlogLink = document.getElementById('add-blog-link');
+            const logoutLink = document.getElementById('logout-link');
+            const signupLink = document.getElementById('signup-link');
+            const signinLink = document.getElementById('signin-link');
+            const currentUser = localStorage.getItem('currentUser');
+            const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+            if (currentUser) {
+                usernameDisplay.textContent = `Welcome, ${currentUser}`;
+                addBlogLink.style.display = 'block';
+                logoutLink.style.display = 'block';
+                signupLink.style.display = 'none';
+                signinLink.style.display = 'none';
+            }
+
+            document.getElementById('logout').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isAdmin');
+                window.location.href = 'index.html';
+            });
+
+            // Array of Bootstrap color classes
+            const bootstrapColors = [
+                'btn-primary',
+                'btn-secondary',
+                'btn-success',
+                'btn-danger',
+                'btn-warning',
+                'btn-info',
+                'btn-light',
+                'btn-dark'
+            ];
+
+            // Function to get a random Bootstrap color class
+            function getRandomBootstrapColor() {
+                const randomIndex = Math.floor(Math.random() * bootstrapColors.length);
+                return bootstrapColors[randomIndex];
+            }
+
+            // Load buttons from localStorage
+            const buttons = JSON.parse(localStorage.getItem('buttons')) || [];
+            const buttonContainer = document.getElementById('button-container');
+            buttons.forEach(button => {
+                const newButton = document.createElement('a');
+                newButton.className = `btn custom-size m-2 ${getRandomBootstrapColor()}`; // Add custom-size class and random Bootstrap color class
+                newButton.href = button.url;
+                newButton.textContent = button.text;
+                newButton.style.color = '#fff'; // Set text color to white for better contrast
+                buttonContainer.appendChild(newButton);
+            });
+        });
+    </script>
 </body>
 </html>

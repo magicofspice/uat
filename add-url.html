@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add URL</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Add URL</h1>
+        <form id="add-url-form">
+            <div class="form-group">
+                <label for="buttonText">Button Text</label>
+                <input type="text" class="form-control" id="buttonText" required>
+            </div>
+            <div class="form-group">
+                <label for="buttonUrl">Button URL</label>
+                <input type="url" class="form-control" id="buttonUrl" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Button</button>
+        </form>
+        <hr>
+        <h2>Remove Button</h2>
+        <div class="form-group">
+            <label for="removeButtonDropdown">Select Button to Remove</label>
+            <select class="form-control" id="removeButtonDropdown"></select>
+        </div>
+        <button id="removeButton" class="btn btn-danger">Remove Button</button>
+        <hr>
+        <button id="homeButton" class="btn btn-secondary">Home</button> <!-- Home button -->
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addUrlForm = document.getElementById('add-url-form');
+            const removeButtonDropdown = document.getElementById('removeButtonDropdown');
+            const removeButton = document.getElementById('removeButton');
+            const homeButton = document.getElementById('homeButton');
+
+            // Simulate fetching existing buttons from a JSON file
+            let buttons = JSON.parse(localStorage.getItem('buttons')) || [];
+
+            // Populate dropdown with existing buttons
+            function populateDropdown() {
+                removeButtonDropdown.innerHTML = '';
+                buttons.forEach((button, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = button.text;
+                    removeButtonDropdown.appendChild(option);
+                });
+            }
+
+            populateDropdown();
+
+            // Add new button
+            addUrlForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const buttonText = document.getElementById('buttonText').value;
+                const buttonUrl = document.getElementById('buttonUrl').value;
+                buttons.push({ text: buttonText, url: buttonUrl });
+                localStorage.setItem('buttons', JSON.stringify(buttons));
+                populateDropdown();
+                alert('Button added successfully!');
+            });
+
+            // Remove selected button
+            removeButton.addEventListener('click', function() {
+                const selectedIndex = removeButtonDropdown.value;
+                if (selectedIndex !== '') {
+                    buttons.splice(selectedIndex, 1);
+                    localStorage.setItem('buttons', JSON.stringify(buttons));
+                    populateDropdown();
+                    alert('Button removed successfully!');
+                }
+            });
+
+            // Navigate to home page
+            homeButton.addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

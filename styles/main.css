@@ -54,3 +54,26 @@ footer {
     background-color: #E6373B;
     color: white;
 }
+
+#button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    width: 150px; /* Set fixed width */
+    height: 50px; /* Set fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn.custom-size {
+    width: 750px; /* Set fixed width */
+    height: 50px; /* Set fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
